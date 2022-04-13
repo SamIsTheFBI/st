@@ -94,7 +94,7 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 
-#include "/home/samisthefbi/.cache/wal/colors-wal-st.h"
+#include "colors-wal-st.h"
 
 
 /* bg opacity */
