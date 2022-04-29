@@ -91,14 +91,14 @@ char *termname = "st-256color";
  *
  *	stty tabs
  */
-unsigned int tabspaces = 8;
+unsigned int tabspaces = 3;
 
 
 #include "colors-wal-st.h"
 
 
 /* bg opacity */
-float alpha = 0.8, alphaUnfocused = 0.6;
+float alpha = 0.9, alphaUnfocused = 0.7;
 
 /* Terminal colors (16 first used in escape sequence) */
 
