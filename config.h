@@ -103,7 +103,7 @@ float alpha = 0.9, alphaUnfocused = 0.7;
 /* Terminal colors (16 first used in escape sequence) */
 
 extern float alpha, alphaUnfocused;
-unsigned int bg = 16, bgUnfocused = 16;
+unsigned int bg = 256, bgUnfocused = 256;
 /*
  * Default shape of cursor
  * 2: Block ("█")
