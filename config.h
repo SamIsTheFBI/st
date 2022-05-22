@@ -111,7 +111,7 @@ unsigned int tabspaces = 3;
 
 
 /* bg opacity */
-float alpha = 0.9, alphaUnfocused = 0.7;
+float alpha = 0.9, alphaUnfocused = 0.9;
 
 /* Terminal colors (16 first used in escape sequence) */
 

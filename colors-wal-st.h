@@ -21,7 +21,7 @@ const char *colorname[] = {
   [15] = "#EADAB1", /* white   */
 
   /* special colors */
-  [256] = "#322119", /* background */
+  [256] = "#282828", /* background */
   [257] = "#EADAB1", /* foreground */
   [258] = "#EADAB1",     /* cursor */
 };
