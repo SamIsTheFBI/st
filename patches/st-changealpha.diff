@@ -1,0 +1,88 @@
+diff --git a/config.h b/config.h
+index 3ab1d47..4bdac82 100644
+--- a/config.h
++++ b/config.h
+@@ -107,7 +107,9 @@ char *termname = "st-256color";
+ unsigned int tabspaces = 3;
+ 
+ /* bg opacity */
+-float alpha = 0.9, alphaUnfocused = 0.9;
++float alpha = 1.0
++float alphaOffset = 0.0;
++float alphaUnfocus;
+ 
+ const char *colorname[] = {
+ 
+@@ -256,8 +258,10 @@ static Shortcut shortcuts[] = {
+ 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
+ 	{ MODKEY,				XK_Up,          kscrollup,      {.i = 1} },
+ 	{ MODKEY|ShiftMask,		XK_Up,          kscrollup,      {.i = -1} },
++	{ MODKEY|ControlMask,	XK_Up,          changealpha,    {.f = +0.05} },
+ 	{ MODKEY,				XK_Down,        kscrolldown,    {.i = 1} },
+-	{ MODKEY|ShiftMask,		XK_Down,        kscrolldown,      {.i = -1} },
++	{ MODKEY|ShiftMask,		XK_Down,        kscrolldown,    {.i = -1} },
++	{ MODKEY|ControlMask,	XK_Down,        changealpha,    {.f = -0.05} },
+ 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
+ };
+ 
+diff --git a/st b/st
+index 7139b74..85630c3 100755
+Binary files a/st and b/st differ
+diff --git a/x.c b/x.c
+index 639eecc..af95216 100644
+--- a/x.c
++++ b/x.c
+@@ -73,6 +73,7 @@ static void zoom(const Arg *);
+ static void zoomabs(const Arg *);
+ static void zoomreset(const Arg *);
+ static void ttysend(const Arg *);
++static void changealpha(const Arg *);
+ 
+ /* config.h for applying patches and the configuration. */
+ #include "config.h"
+@@ -179,6 +180,7 @@ static void xsetenv(void);
+ static void xseturgency(int);
+ static int evcol(XEvent *);
+ static int evrow(XEvent *);
++static float clamp(float, float, float);
+ 
+ static void expose(XEvent *);
+ static void visibility(XEvent *);
+@@ -311,6 +313,18 @@ numlock(const Arg *dummy)
+ 	win.mode ^= MODE_NUMLOCK;
+ }
+ 
++void
++changealpha(const Arg *arg)
++{
++    if((alpha > 0 && arg->f < 0) || (alpha < 1 && arg->f > 0))
++        alpha += arg->f;
++    alpha = clamp(alpha, 0.0, 1.0);
++    alphaUnfocus = clamp(alpha-alphaOffset, 0.0, 1.0);
++
++    xloadcols();
++    redraw();
++}
++
+ void
+ zoom(const Arg *arg)
+ {
+@@ -363,6 +377,15 @@ evrow(XEvent *e)
+ 	return y / win.ch;
+ }
+ 
++float
++clamp(float value, float lower, float upper) {
++    if(value < lower)
++        return lower;
++    if(value > upper)
++        return upper;
++    return value;
++}
++
+ void
+ mousesel(XEvent *e, int done)
+ {
+diff --git a/x.o b/x.o
+index e7e5c7d..fa063d4 100644
+Binary files a/x.o and b/x.o differ

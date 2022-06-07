@@ -5,8 +5,13 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "JetBrainsMono Nerd Font:style:medium:size=10"; 
+static char *font = "JetBrainsMono Nerd Font:style:regular:size=10";
 static int borderpx = 2;
+
+/* disable bold, italic and roman fonts globally */
+int disablebold = 1;
+int disableitalic = 0;
+int disableroman = 0;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -67,7 +72,6 @@ static unsigned int blinktimeout = 800;
  */
 static unsigned int cursorthickness = 2;
 
-
 /*
  * 1: render most of the lines/blocks characters without using the font for
  *    perfect alignment between cells (U2500 - U259F except dashes/diagonals).
@@ -104,11 +108,14 @@ char *termname = "st-256color";
  *
  *	stty tabs
  */
-unsigned int tabspaces = 3;
+unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.9, alphaUnfocused = 0.9;
+float alpha = 1.0;
+float alphaOffset = 0.0;
+float alphaUnfocus;
 
+/* Terminal colors (16 first used in escape sequence) */
 const char *colorname[] = {
 
   /* 8 normal colors */
@@ -130,6 +137,7 @@ const char *colorname[] = {
   [13] = "#D5A165", /* magenta */
   [14] = "#85C1EE", /* cyan    */
   [15] = "#FBF1C7", /* white   */
+  [255] = 0,
 
   /* special colors */
   [256] = "#282828", /* background */
@@ -137,17 +145,16 @@ const char *colorname[] = {
   [258] = "#FBF1C7",     /* cursor */
 };
 
-/* Default colors (colorname index)
- * foreground, background, cursor */
- unsigned int defaultbg = 0;
- unsigned int defaultfg = 257;
- unsigned int defaultcs = 258;
- unsigned int defaultrcs= 258;
 
-/* Terminal colors (16 first used in escape sequence) */
+/*
+ * Default colors (colorname index)
+ * foreground, background, cursor, reverse cursor
+ */
+unsigned int defaultfg = 257;
+unsigned int defaultbg = 256;
+unsigned int defaultcs = 258;
+unsigned int defaultrcs = 258;
 
-extern float alpha, alphaUnfocused;
-unsigned int bg = 256, bgUnfocused = 256;
 /*
  * Default shape of cursor
  * 2: Block ("█")
@@ -220,8 +227,6 @@ ResourcePref resources[] = {
 		{ "chscale",      FLOAT,   &chscale },
 };
 
-
-
 /*
  * Internal mouse shortcuts.
  * Beware that overloading Button1 will disable the selection.
@@ -256,8 +261,10 @@ static Shortcut shortcuts[] = {
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ MODKEY,				XK_Up,          kscrollup,      {.i = 1} },
 	{ MODKEY|ShiftMask,		XK_Up,          kscrollup,      {.i = -1} },
+	{ MODKEY|ControlMask,	XK_Up,          changealpha,    {.f = +0.05} },
 	{ MODKEY,				XK_Down,        kscrolldown,    {.i = 1} },
-	{ MODKEY|ShiftMask,		XK_Down,        kscrolldown,      {.i = -1} },
+	{ MODKEY|ShiftMask,		XK_Down,        kscrolldown,    {.i = -1} },
+	{ MODKEY|ControlMask,	XK_Down,        changealpha,    {.f = -0.05} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
 };
 
