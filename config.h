@@ -8,11 +8,6 @@
 static char *font = "JetBrainsMono Nerd Font:style:regular:size=10";
 static int borderpx = 2;
 
-/* disable bold, italic and roman fonts globally */
-int disablebold = 1;
-int disableitalic = 0;
-int disableroman = 0;
-
 /*
  * What program is execed by st depends of these precedence rules:
  * 1: program passed with -e
@@ -153,7 +148,7 @@ const char *colorname[] = {
 unsigned int defaultfg = 257;
 unsigned int defaultbg = 256;
 unsigned int defaultcs = 258;
-unsigned int defaultrcs = 258;
+unsigned int defaultrcs = 256;
 
 /*
  * Default shape of cursor
