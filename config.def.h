@@ -223,10 +223,10 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
 	{ MODKEY|ControlMask,	XK_Down,        changealpha,    {.f = -0.05} },
 	{ MODKEY|ControlMask,	XK_Up,          changealpha,    {.f = +0.05} },
-	{ Mod1Mask,            XK_Up,     kscrollup,      {.i = 1} },
-	{ Mod1Mask|ShiftMask,            XK_Up,     kscrollup,      {.i = -1} },
-	{ Mod1Mask,            XK_Down,   kscrolldown,    {.i = 1} },
-	{ Mod1Mask|ShiftMask,            XK_Down,     kscrolldown,      {.i = -1} },
+	{ MODKEY,            XK_Up,     kscrollup,      {.i = 1} },
+	{ MODKEY|ShiftMask,            XK_Up,     kscrollup,      {.i = -1} },
+	{ MODKEY,            XK_Down,   kscrolldown,    {.i = 1} },
+	{ MODKEY|ShiftMask,            XK_Down,     kscrolldown,      {.i = -1} },
 };
 
 /*
