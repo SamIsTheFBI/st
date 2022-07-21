@@ -14,6 +14,7 @@
 - boxdraw
 - glyph-wide-support
 - ligatures
+- netwmicon
 - scrollback
 - xresources
 - xresources-signal-reloading
